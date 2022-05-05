@@ -3,13 +3,20 @@ import 'package:flutter/material.dart';
 class Resposta extends StatelessWidget {
 
   final String texto;
-  Resposta(this.texto);
+  final void Function() qunadoSelecionado;
+
+  Resposta(this.texto, this.qunadoSelecionado);
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      child: Text(texto),
-      onPressed: null,
+    return Container(
+      width: double.infinity,
+      child: RaisedButton(
+        textColor: Colors.white,
+        color: Colors.blue,
+        child: Text(texto),
+        onPressed: qunadoSelecionado,
+      ),
     );
   }
 }
