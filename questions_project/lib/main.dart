@@ -1,34 +1,53 @@
 import 'package:flutter/material.dart';
 
-import './questao.dart';
-import './resposta.dart';
+import 'package:questions_project/questionario.dart';
+import 'package:questions_project/resultado.dart';
+
 
 main () => runApp(PerguntaApp());
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var _perguntaSelecionada = 0;
+  var _pontuacaoTotal = 0;
 
   final List<Map<String, Object>> _perguntas = const [
       {
         'texto': 'Qual é a sua cor favorita?',
-        'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco']
+        'respostas': [
+          {'texto': 'Preto', 'pontuacao': 10},
+          {'texto': 'Vermelho', 'pontuacao': 5}, 
+          {'texto': 'Verde', 'pontuacao': 3},
+          {'texto': 'Branco', 'pontuacao': 1}
+        ]
       },
       {
         'texto': 'Qual o seu animal favorito?',
-        'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão']
+        'respostas': [
+          {'texto': 'Coelho', 'pontuacao': 10},
+          {'texto': 'Cobra', 'pontuacao': 5},
+          {'texto': 'Elefante', 'pontuacao': 3},
+          {'texto': 'Leão', 'pontuacao': 1}
+        ]
       },
       {
         'texto': 'Qual a sua série favorita?',
-        'respostas': ['Sherlock', 'Vikings', 'Dark', 'The Last Kingdom']
+        'respostas': [
+          {'texto': 'Sherlock', 'pontuacao': 10},
+          {'texto': 'Vikings', 'pontuacao': 5},
+          {'texto': 'Dark', 'pontuacao': 3},
+          {'texto': 'The Last Kingdom', 'pontuacao': 1}
+        ]
       }
     ];
 
-  void _responder() {
+  void _responder(int pontuacao) {
     if (temPerguntaSelecionada) {
       setState(() {
         _perguntaSelecionada++;
+        _pontuacaoTotal += pontuacao;
       });
     }
+    print('Pontuação Total: $_pontuacaoTotal');
   }
 
   bool get temPerguntaSelecionada {
@@ -37,27 +56,19 @@ class _PerguntaAppState extends State<PerguntaApp> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<String> respostas = temPerguntaSelecionada 
-      ? _perguntas[_perguntaSelecionada]['respostas'] as List<String>
-      : [];  
-
+ 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: const Text("Perguntas"),
         ),
-        body: temPerguntaSelecionada ? Column(
-          children: [
-            Questao(_perguntas[_perguntaSelecionada]['texto'] as String),
-            ...respostas.map((t) => Resposta(t, _responder)).toList(),
-          ],
-        ) : const Center(
-              child: Text(
-                "Parabéns", 
-                style: TextStyle(fontSize: 28),
-              ),
-            ),
+        body: temPerguntaSelecionada 
+          ? Questionario(
+              perguntas: _perguntas, 
+              perguntaSelecionada: _perguntaSelecionada, 
+              quandoResponder: _responder
+            ) 
+          : Resultado(),
       ),
     );
   }
