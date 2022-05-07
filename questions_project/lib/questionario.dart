@@ -12,7 +12,7 @@ class Questionario extends StatelessWidget {
 
   Questionario({
     required this.perguntas,
-    required this.perguntaSelecionada ,
+    required this.perguntaSelecionada,
     required this.quandoResponder
   });
 
